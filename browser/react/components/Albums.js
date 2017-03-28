@@ -2,6 +2,8 @@ import React from 'react';
 
 const Albums = (props) => {
 
+  console.log(props);
+
   const albums = props.albums;
   const selectAlbum = props.selectAlbum;
 
