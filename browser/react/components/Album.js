@@ -21,7 +21,7 @@ class Album extends React.Component {
     return (
       <div className="album">
         <div>
-          <h3>{ album.name }   <a href=''><span className='glyphicon glyphicon-share'></span></a></h3>
+          <h3>{ album.name }   <a href={`mailto:?subject=${album.name}&body=Check out this album at ${window.location.href}`}><span className='glyphicon glyphicon-share'></span></a></h3>
           <img src={ album.imageUrl } className="img-thumbnail" />
         </div>
         <Songs
