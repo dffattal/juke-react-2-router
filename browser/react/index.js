@@ -8,10 +8,11 @@ import Artist from './components/Artist';
 import Artists from './components/Artists';
 import ArtistAlbums from './components/ArtistAlbums';
 import ArtistSongs from './components/ArtistSongs';
+import BadPath from './components/BadPath';
 
 ReactDOM.render(
 
-  <Router history={hashHistory}>
+  <Router history={browserHistory}>
     <Route path='/' component={ AppContainer }>
       <IndexRedirect to='/albums' />
     	<Route path='/albums' component={Albums} />
@@ -21,6 +22,7 @@ ReactDOM.render(
         <Route path='albums' component={ArtistAlbums} />
         <Route path='songs' component={ArtistSongs} />
       </Route>
+      <Route path="*" component={BadPath} />
     </Route>
   </Router>,
 
