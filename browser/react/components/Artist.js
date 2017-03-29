@@ -26,7 +26,7 @@ class Artist extends React.Component {
     const children = this.props.children;
     const propsToPassToChildren = {
       /**todo: make sure to include all the props that the child components need! **/
-      
+
       selectAlbum: selectAlbum,
       albums: artistAlbums,
       songs: artistSongs,
@@ -56,17 +56,3 @@ class Artist extends React.Component {
 }
 
 export default Artist;
-
-
-    {/* return (
-      <div>
-        <h3>{artist.name}</h3>
-        <Albums
-          albums={artistAlbums} />
-        <h4>Songs:</h4>
-        <Songs
-          songs={artistSongs}
-          currentSong={currentSong}
-          isPlaying={isPlaying}
-          toggleOne={toggleOne} />
-      </div> ) */}

@@ -18,8 +18,8 @@ ReactDOM.render(
     	<Route path='/albums/:id' component={Album} />
     	<Route path='/artists' component={Artists} />
       <Route path='/artists/:id' component={Artist} >
-        <Route path='/artists/:id/albums' component={ArtistAlbums} />
-        <Route path='/artists/:id/songs' component={ArtistSongs} />
+        <Route path='albums' component={ArtistAlbums} />
+        <Route path='songs' component={ArtistSongs} />
       </Route>
     </Route>
   </Router>,
