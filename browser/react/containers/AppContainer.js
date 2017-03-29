@@ -6,6 +6,7 @@ import AUDIO from '../audio';
 
 import Albums from '../components/Albums.js';
 import Album from '../components/Album';
+
 import Sidebar from '../components/Sidebar';
 import Player from '../components/Player';
 
@@ -23,12 +24,18 @@ export default class AppContainer extends Component {
     this.prev = this.prev.bind(this);
     this.selectAlbum = this.selectAlbum.bind(this);
     this.deselectAlbum = this.deselectAlbum.bind(this);
+    this.selectArtist = this.selectArtist.bind(this);
+    this.deselectArtist = this.deselectArtist.bind(this);
   }
 
   componentDidMount () {
     axios.get('/api/albums/')
       .then(res => res.data)
-      .then(album => this.onLoad(convertAlbums(album)));
+      .then(albums => this.onLoadAlbums(convertAlbums(albums)));
+
+    axios.get('/api/artists')
+      .then(res => res.data)
+      .then(artists => this.onLoadArtists(artists));
 
     AUDIO.addEventListener('ended', () =>
       this.next());
@@ -36,9 +43,15 @@ export default class AppContainer extends Component {
       this.setProgress(AUDIO.currentTime / AUDIO.duration));
   }
 
-  onLoad (albums) {
+  onLoadAlbums (albums) {
     this.setState({
       albums: albums
+    });
+  }
+
+  onLoadArtists (artists) {
+    this.setState({
+      artists: artists
     });
   }
 
@@ -102,11 +115,23 @@ export default class AppContainer extends Component {
     this.setState({ selectedAlbum: {}});
   }
 
+  selectArtist (artistId) {
+    axios.get(`/api/artists/${artistId}`)
+      .then(res => res.data)
+      .then(artist => this.setState({
+        selectedArtist: artist
+      }));
+  }
+
+  deselectArtist () {
+    this.setState({ selectedArtist: {}});
+  }
+
   render () {
     return (
       <div id="main" className="container-fluid">
         <div className="col-xs-2">
-          <Sidebar deselectAlbum={this.deselectAlbum} />
+          <Sidebar deselectAlbum={this.deselectAlbum} deselectArtist={this.deselectArtist} />
         </div>
         <div className="col-xs-10">
         { 
@@ -119,7 +144,10 @@ export default class AppContainer extends Component {
             toggleOne: this.toggleOne,
 
             albums: this.state.albums,
-            selectAlbum: this.selectAlbum
+            selectAlbum: this.selectAlbum,
+
+            artists: this.state.artists,
+            selectArtist: this.selectArtist
 
             }) 
             : null 
