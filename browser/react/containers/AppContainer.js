@@ -10,7 +10,7 @@ import Album from '../components/Album';
 import Sidebar from '../components/Sidebar';
 import Player from '../components/Player';
 
-import { convertAlbum, convertAlbums, skip } from '../utils';
+import { convertSong, convertAlbum, convertAlbums, skip } from '../utils';
 
 export default class AppContainer extends Component {
 
@@ -26,6 +26,8 @@ export default class AppContainer extends Component {
     this.deselectAlbum = this.deselectAlbum.bind(this);
     this.selectArtist = this.selectArtist.bind(this);
     this.deselectArtist = this.deselectArtist.bind(this);
+    this.selectArtistAlbums = this.selectArtistAlbums.bind(this);
+    this.selectArtistSongs = this.selectArtistSongs.bind(this);
   }
 
   componentDidMount () {
@@ -124,7 +126,23 @@ export default class AppContainer extends Component {
   }
 
   deselectArtist () {
-    this.setState({ selectedArtist: {}});
+    this.setState({ selectedArtist: {}, selectedArtistAlbums: [], selectedArtistSongs: []});
+  }
+
+  selectArtistAlbums (artistId) {
+    axios.get(`/api/artists/${artistId}/albums`)
+      .then(res => res.data)
+      .then(artistAlbums => this.setState({
+        selectedArtistAlbums: convertAlbums(artistAlbums)
+      }));
+  }
+
+  selectArtistSongs (artistId) {
+    axios.get(`/api/artists/${artistId}/songs`)
+      .then(res => res.data)
+      .then(artistSongs => this.setState({
+        selectedArtistSongs: artistSongs.map(song => convertSong(song))
+      }));
   }
 
   render () {
@@ -134,9 +152,9 @@ export default class AppContainer extends Component {
           <Sidebar deselectAlbum={this.deselectAlbum} deselectArtist={this.deselectArtist} />
         </div>
         <div className="col-xs-10">
-        { 
-          this.props.children ? 
-            React.cloneElement(this.props.children, { 
+        {
+          this.props.children ?
+            React.cloneElement(this.props.children, {
 
             album: this.state.selectedAlbum,
             currentSong: this.state.currentSong,
@@ -147,10 +165,16 @@ export default class AppContainer extends Component {
             selectAlbum: this.selectAlbum,
 
             artists: this.state.artists,
-            selectArtist: this.selectArtist
+            selectArtist: this.selectArtist,
+            selectedArtist: this.state.selectedArtist,
 
-            }) 
-            : null 
+            selectArtistAlbums: this.selectArtistAlbums,
+            selectArtistSongs: this.selectArtistSongs,
+            selectedArtistAlbums: this.state.selectedArtistAlbums,
+            selectedArtistSongs: this.state.selectedArtistSongs
+
+            })
+            : null
         }
         {/*{
           this.state.selectedAlbum.id ?

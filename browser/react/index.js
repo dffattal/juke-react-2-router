@@ -15,7 +15,7 @@ ReactDOM.render(
     	<Route path='/albums' component={Albums} />
     	<Route path='/albums/:id' component={Album} />
     	<Route path='/artists' component={Artists} />
-      	<Route path='/artists/:id' component={Artist} />
+      <Route path='/artists/:id' component={Artist} />
     </Route>
   </Router>,
 
